@@ -1,0 +1,24 @@
+{
+  "name": "delivery-server-api",
+  "version": "1.0.0",
+  "description": "Api for client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.3",
+    "compression": "^1.7.3",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "express-validator": "^5.3.0",
+    "joi": "^13.4.0",
+    "moment": "^2.22.2",
+    "mongoose": "^5.2.5",
+    "mongoose-timestamp": "^0.6.0"
+  }
+}
