@@ -5,7 +5,6 @@ const ShipmentValidator = require('./shipmentValidator');
 const { SHIPMENT_STATUSES } = require('./definitions');
 const getEditableFields = require('./editableFieldsHelper');
 const ValidationError = require('./../abstract/validationError');
-const StatusHelper = require('./statusHelper');
 
 class ShipmentService extends CrudService {
 
@@ -23,6 +22,10 @@ class ShipmentService extends CrudService {
         return new ShipmentValidator();
     }
 
+    /**
+     * Get list of shipments with editable fields
+     * @param {Request} req 
+     */
     async getPreparedShipments(req) {
         const role = req.user.role;
         const limit = _.get(req, 'query.limit', 10); // add from config
@@ -100,13 +103,6 @@ class ShipmentService extends CrudService {
         const editableFields = getEditableFields(role, status);
         const editableData = _.pick(data, editableFields);
 
-        const newStatus = StatusHelper.getNewStatus(editableData, status);
-
-        if (newStatus) {
-            editableData.status = newStatus;
-            editableFields.push('status');
-        }
-
         if (validator) {
             const { error } = validator.validate(editableData, editableFields);
 
@@ -116,7 +112,7 @@ class ShipmentService extends CrudService {
         }
 
         try {
-            await model.update({ _id: id }, { $set: editableData });
+            return await model.update({ _id: id }, { $set: editableData });
         } catch (err) {
             throw err;
         }

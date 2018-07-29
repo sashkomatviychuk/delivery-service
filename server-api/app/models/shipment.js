@@ -64,6 +64,20 @@ ShipmentSchema.plugin(timestamps, {
     updatedAt: 'updated_at',
 });
 
+ShipmentSchema.pre('save', function (next) {
+    if (this.status === SHIPMENT_STATUSES.assigned && this.picked_at) {
+        this.status = SHIPMENT_STATUSES.picked_up;
+    } else if (this.status === SHIPMENT_STATUSES.picked_up && this.delivered_at) {
+        this.status = SHIPMENT_STATUSES.delivered;
+    } else if (this.status === SHIPMENT_STATUSES.waiting && this.biker_id) {
+        this.status = SHIPMENT_STATUSES.assigned;
+    } else if (this.status === SHIPMENT_STATUSES.assigned && !this.biker_id) {
+        this.status = SHIPMENT_STATUSES.waiting;
+    }
+
+    next();
+});
+
 const Shipment = mongoose.model('Shipment', ShipmentSchema);
 
 global.Shipment = Shipment;
