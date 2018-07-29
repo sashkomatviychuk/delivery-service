@@ -3,6 +3,7 @@ const _ = require('lodash');
 const generateToken = require('./../services/auth/token');
 const UserService = require('./../services/user/userService');
 const ValidationError = require('./../services/abstract/validationError');
+const ShipmentService = require('./../services/shipment/shipmentService');
 
 module.exports = {
 
@@ -61,4 +62,23 @@ module.exports = {
             });
         }
     },
+
+    /**
+     * @param {Request} req 
+     * @param {Response} res 
+     */
+    async getStats(req, res) {
+        const shipmentService = new ShipmentService();
+
+        try {
+            const stats = await shipmentService.getStats(req.user);
+
+            return res.json({
+                stats,
+                result: 1,
+            });
+        } catch (err) {
+            return res.json({ result: 0 });
+        }
+    }
 };

@@ -11,8 +11,17 @@ const auth = (req, res, next) => {
     res.status(401).json({ result: 0 });
 };
 
+const allowedForShipper = (req, res, next) => {
+    if (req.user && req.user.role === 'shipper') {
+        return next();
+    }
+
+    res.status(403).json({ result: 0 });
+};
+
 module.exports = {
     requireAuth,
     requireSignin,
     auth,
+    allowedForShipper,
 };
