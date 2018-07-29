@@ -5,6 +5,7 @@ const ShipmentValidator = require('./shipmentValidator');
 const { SHIPMENT_STATUSES } = require('./definitions');
 const getEditableFields = require('./editableFieldsHelper');
 const ValidationError = require('./../abstract/validationError');
+const StatusHelper = require('./statusHelper');
 
 class ShipmentService extends CrudService {
 
@@ -73,6 +74,49 @@ class ShipmentService extends CrudService {
 
         try {
             await entity.save();
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * Update shipment
+     * @param {Object} data 
+     * @param {ObjectId} id 
+     * @param {Object} user 
+     */
+    async updateShipment(data, id, user) {
+        const model = this.getModel();
+        const validator = this.getValidator();
+
+        const role = user.role;
+        const shipment = await Shipment.findOne({ _id: id }).exec();
+
+        if (!shipment) {
+            throw new Error('Shipment doest not exists');
+        }
+
+        const status = shipment.status;
+        const editableFields = getEditableFields(role, status);
+        const editableData = _.pick(data, editableFields);
+
+        const newStatus = StatusHelper.getNewStatus(editableData, status);
+
+        if (newStatus) {
+            editableData.status = newStatus;
+            editableFields.push('status');
+        }
+
+        if (validator) {
+            const { error } = validator.validate(editableData, editableFields);
+
+            if (error) {
+                throw new ValidationError(_.get(error, 'details[0].message'));
+            }
+        }
+
+        try {
+            await model.update({ _id: id }, { $set: editableData });
         } catch (err) {
             throw err;
         }

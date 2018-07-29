@@ -57,6 +57,13 @@ module.exports = {
             await shipmentService.create(req.body);
             return res.json({ result: 1 });
         } catch (err) {
+            if (err instanceof ValidationError) {
+                return res.json({
+                    error: err.message,
+                    result: 0
+                });
+            }
+
             return res.json({ result: 0 });
         }
     },
@@ -67,9 +74,21 @@ module.exports = {
      * @param {Response} res 
      */
     async putShipment(req, res) {
-        try {
+        const user = req.user;
+        const data = req.body;
+        const id = req.params.id;
+        const shipmentService = new ShipmentService();
 
+        try {
+            await shipmentService.updateShipment(data, id, user);
         } catch (err) {
+            if (err instanceof ValidationError) {
+                return res.json({
+                    error: err.message,
+                    result: 0
+                });
+            }
+            
             return res.json({ result: 0 });
         }
     }
