@@ -1,4 +1,7 @@
+const _ = require('lodash');
 const ObjectId = require('mongoose').Types.ObjectId;
+
+const ValidationError = require('./../abstract/validationError');
 
 class CrudService {
 
@@ -63,10 +66,10 @@ class CrudService {
         const validator = this.getValidator();
 
         if (validator) {
-            const error = validator.validate(data);
+            const { error } = validator.validate(data);
 
             if (error) {
-                throw new Error(error);
+                throw new ValidationError(_.get(error, 'details[0].message'));
             }
         }
 
@@ -89,10 +92,10 @@ class CrudService {
         const validator = this.getValidator();
 
         if (validator) {
-            const error = validator.validate(data);
+            const { error } = validator.validate(data);
 
             if (error) {
-                throw new Error(error);
+                throw new ValidationError(_.get(error, 'details[0].message'));
             }
         }
 

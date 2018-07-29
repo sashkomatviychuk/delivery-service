@@ -4,12 +4,15 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const moment = require('moment');
+const passport = require('passport');
 
 const config = require('./app/config');
 // require controllers
-// add middlewares
+const apiRoutes = require('./app/middlewares/routes');
 // models
 require('./app/models');
+// passport
+require('./app/services/auth/passport');
 
 /**
  * Application definition
@@ -31,8 +34,17 @@ class Application {
         this.express.use(bodyParser.urlencoded({ extended: true }));
         this.express.use(cookieParser());
 
+        // init passport
+        this.express.use(passport.initialize());
+        this.express.use(passport.session());
+
         // apply routes
-        this.express.use('/api', issuesController);
+        this.express.use('/api', apiRoutes);
+        this.express.use((req, res) => {
+            res.status(404).json({
+                error: 'Not found',
+            });
+        });
     }
 
     setupViews() {
