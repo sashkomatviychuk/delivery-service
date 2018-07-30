@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import { doLogin } from './../user/actions';
 import FormLayout from './../layouts/FormLayout';
