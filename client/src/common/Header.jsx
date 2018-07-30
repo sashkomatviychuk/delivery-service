@@ -12,13 +12,13 @@ class Header extends React.Component {
 
         return (
             <header>
-                <div class="header__info">
-                    <div id="toggle-menu" data-target="#menu">
-                        <div class="humburger-inner"></div>
-                        <div class="humburger-inner"></div>
-                        <div class="humburger-inner"></div>
-                    </div>
-                    <div class="header__logo">Delivery</div>
+                <div className="header__info">
+                    {isLoggedIn && <div id="toggle-menu" data-target="#menu">
+                        <div className="humburger-inner"></div>
+                        <div className="humburger-inner"></div>
+                        <div className="humburger-inner"></div>
+                    </div>}
+                    <div className="header__logo">Delivery</div>
                 </div>
 
                 <Nav />
