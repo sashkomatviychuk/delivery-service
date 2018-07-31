@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Redirect from 'react-router/Redirect';
 
 import MenuLayout from './../layouts/MenuLayout';
 import ErrorBox from './../common/ErrorBox';
+import { createShipment } from './../shipment/actions';
 
 class AddShipmentForm extends React.Component {
 
@@ -11,6 +13,7 @@ class AddShipmentForm extends React.Component {
     state = {
         data: {},
         erorr: '',
+        redirect: false,
     };
 
     onChange = e => {
@@ -27,9 +30,24 @@ class AddShipmentForm extends React.Component {
 
     onSubmit = e => {
         e.preventDefault();
+
+        this.props.createShipment(this.state.data)
+            .then(response => {
+                if (response.error) {
+                    this.setState(() => ({ error: response.error }));
+                } else if (!response.result) {
+                    this.setState(() => ({ error: 'Unknown error. Try again' }));
+                } else {
+                    this.setState(() => ({ redirect: true }));
+                }
+            });
     }
 
     render() {
+
+        if (this.state.redirect) {
+            return (<Redirect to="/" />);
+        }
 
         return (
             <div className="main__content">
@@ -42,10 +60,10 @@ class AddShipmentForm extends React.Component {
                         <input type="text" name="title" id="title" placeholder="Shipment name" autoComplete="off" required onChange={this.onChange} />
                     </div>
                     <div className="form__input">
-                        <input type="text" name="departue_location" id="departue_location" placeholder="Origin address" autoComplete="off" required onChange={this.onChange} />
+                        <input type="text" name="origin_address" id="origin_address" placeholder="Origin address" autoComplete="off" required onChange={this.onChange} />
                     </div>
                     <div className="form__input">
-                        <input type="text" name="arrival_location" id="arrival_location" placeholder="Destination address" autoComplete="off" required onChange={this.onChange} />
+                        <input type="text" name="destination_address" id="destination_address" placeholder="Destination address" autoComplete="off" required onChange={this.onChange} />
                     </div>
                     <div className="form__input">
                         <input type="number" min="0" name="cost" id="cost" placeholder="Cost" autoComplete="off" required onChange={this.onChange} />
@@ -62,9 +80,12 @@ class AddShipmentForm extends React.Component {
 
 const mapDispatchToProps = dispatch => {
     return {
+        createShipment(data) {
+            return dispatch(createShipment(data));
+        },
     };
 }
 
 export default MenuLayout(
-    AddShipmentForm
+    connect(undefined, mapDispatchToProps)(AddShipmentForm)
 );

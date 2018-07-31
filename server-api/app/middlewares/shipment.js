@@ -1,6 +1,7 @@
 const _ = require('lodash');
 
 const ShipmentService = require('./../services/shipment/shipmentService');
+const ValidationError = require('./../services/abstract/validationError');
 
 module.exports = {
 
@@ -63,6 +64,8 @@ module.exports = {
                     result: 0
                 });
             }
+
+            console.log(err);
 
             return res.json({ result: 0 });
         }

@@ -30,6 +30,7 @@ const ShipmentSchema = mongoose.Schema({
     discount_type: {
         type: String,
         enum: [
+            null,
             DISCOUNT_TYPES.amount,
             DISCOUNT_TYPES.percentage,
         ],
