@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import { doRegister } from './../user/actions';
 import FormLayout from './../layouts/FormLayout';
+import ErrorBox from './../common/ErrorBox';
 
 class Register extends React.Component {
     // initial state
@@ -19,6 +20,7 @@ class Register extends React.Component {
 
         this.setState(() => ({
             data: {
+                ...this.state.data,
                 [name]: value,
             },
         }));
@@ -40,14 +42,18 @@ class Register extends React.Component {
     }
 
     render() {
-        // todo:
-        // move form to other new component
-        // handle state error
-        // handle hide form, show redirect link
+        if (!this.state.showForm) {
+            return (
+                <div>
+                    <div>You register successfuly. Now you can log in.</div>
+                    <Link to="/login" className="button button-link">Login</Link>
+                </div>
+            );
+        }
 
         return (
             <form action="#" method="post" onSubmit={this.onSubmit}>
-                {this.state.error && <div>{this.state.error}</div>}
+                <ErrorBox error={this.state.error} />
                 <div className="form__input">
                     <input type="text" name="first_name" id="first_name" placeholder="First name" autoComplete="off" required onChange={this.onChange} />
                 </div>
@@ -89,7 +95,7 @@ class Register extends React.Component {
 const mapDispatchToProps = dispatch => {
     return {
         doRegister(data) {
-            dispatch(doRegister(data))
+            return dispatch(doRegister(data))
         },
     };
 }

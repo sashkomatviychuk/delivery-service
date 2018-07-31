@@ -28,7 +28,9 @@ class Header extends React.Component {
 }
 
 function mapStateToProps(state) {
-    return { isLoggedIn: state.user.isLoggedIn };
+    return {
+        isLoggedIn: state.user.isLoggedIn,
+    };
 }
 
 export default connect(mapStateToProps)(Header);

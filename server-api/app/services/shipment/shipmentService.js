@@ -33,8 +33,10 @@ class ShipmentService extends CrudService {
         const page = _.get(req, 'query.page', 1);
         const filter = {};
 
-        if (user.role !== 'manager') {
-            filter._id = user._id;
+        if (user.role === USER_ROLES.shipper) {
+            filter.shipper_id = user._id;
+        } else if (user.role === USER_ROLES.biker) {
+            filter.biker_id = user._id;
         }
 
         const list = this.getPaginatedList(filter, { limit, page });
@@ -46,6 +48,28 @@ class ShipmentService extends CrudService {
         }
 
         return [];
+    }
+
+    /**
+     * Returns paginated list of entities
+     * @param {Object} filter
+     * @param {Object} options
+     * @returns {Array}
+     */
+    async getPaginatedList(filter, options) {
+        const page = parseInt(options.page) || 1;
+        const limit = parseInt(options.limit) || this.DEFAULT_ENTITIES_LIMIT;
+        const skip = (page - 1) * limit;
+
+        return await Shipment
+            .find(filter || {})
+            .populate('shipper_id', 'first_name', 'last_name')
+            .populate('biker_id', 'first_name', 'last_name')
+            .sort({ _id: -1 })
+            .limit(limit)
+            .skip(skip)
+            .lean()
+            .exec();
     }
 
     /**

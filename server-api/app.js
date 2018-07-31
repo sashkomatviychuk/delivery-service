@@ -38,6 +38,12 @@ class Application {
         this.express.use(passport.initialize());
         this.express.use(passport.session());
 
+        this.express.use(function(req, res, next) {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+            next();
+        });
+
         // apply routes
         this.express.use('/api', apiRoutes);
         this.express.use((req, res) => {

@@ -4,6 +4,24 @@ import { connect } from 'react-redux';
 
 import { doLogout } from './../user/actions';
 
+const menuItems = [
+    {
+        link: '/',
+        title: 'Dashboard',
+        allowed: ['shipper', 'manager', 'biker'],
+    },
+    {
+        link: '/add-shipment',
+        title: 'New shipment',
+        allowed: ['shipper'],
+    },
+    {
+        link: '#',
+        title: 'Shipments',
+        allowed: ['shipper', 'manager', 'biker'],
+    },
+];
+
 class Menu extends React.Component {
 
     onLogout = e => {
@@ -12,23 +30,34 @@ class Menu extends React.Component {
     }
 
     render() {
-        // display only items allowed for user
+        const { userRole } = this.props;
+
+        const menuHtml = menuItems
+            .filter(item => item.allowed.indexOf(userRole) !== -1)
+            .map(item => (
+                <div className="main__nav-item" key={`menu_${item.title}`}>
+                    <Link to={item.link}>{item.title}</Link>
+                </div>
+            ));
 
         return (
             <div className="main__nav" id="menu">
-                <div className="main__nav-item"><a href="#">Dashboard</a></div>
-                <div className="main__nav-item"><a href="#">New shipment</a></div>
-                <div className="main__nav-item"><a href="#">My shipments</a></div>
+                {menuHtml}
                 <div className="main__nav-item">
-                    <a href="#" onClick={this.onLogout}>Logout</a>
+                    <a href="javascript:void(0);" onClick={this.onLogout}>Logout</a>
                 </div>
             </div>
         );
     }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = state => {
+    return {
+        userRole: state.user.data.role,
+    };
+};
 
+const mapDispatchToProps = dispatch => {
     return {
         doLogout(data) {
             dispatch(doLogout(data))
@@ -36,4 +65,4 @@ const mapDispatchToProps = dispatch => {
     };
 }
 
-export default connect(undefined, mapDispatchToProps)(Menu);
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);

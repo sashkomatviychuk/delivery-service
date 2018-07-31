@@ -216,12 +216,36 @@ footer {
   width: 100%;
 }
 
+.form__error {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 8px 12px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form__error-close {
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.main__content form {
+  max-width: 600px;
+}
+
+.row__container form {
+  max-width: 300px;
+}
+
 .form__input input, .form__input select {
   font-size: 14px;
   padding: 10px;
   margin-top: 15px;
   width: 100%;
-  max-width: 300px;
+  /* max-width: 300px; */
   border: 1px solid #ccc;
 }
 
@@ -237,6 +261,10 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.main__content form .form__actions {
+  justify-content: start;
 }
 
 .form__input-radiogroup {

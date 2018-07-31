@@ -1,6 +1,6 @@
 window.addEventListener('load', () => {
     const toggleMenuButton = document.getElementById('toggle-menu');
-
+    
     if (toggleMenuButton) {
         toggleMenuButton.addEventListener('click', function (e) {
             const menuSelector = this.getAttribute('data-target');

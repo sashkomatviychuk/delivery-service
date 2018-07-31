@@ -1,8 +1,9 @@
-import { SET_USER, DESTROY_USER } from './actions'
+import { SET_USER, DESTROY_USER, SET_USER_STATS } from './actions'
 
 let initialState = {
     isLoggedIn: false,
     data: {},
+    stats: [],
     token: null,
 };
 
@@ -23,6 +24,13 @@ export default (state = initialState, action) => {
                 data: {},
                 token: null,
             };
+        
+        case SET_USER_STATS: {
+            return {
+                ...state,
+                stats: action.stats,
+            };
+        }
 
         default:
             return state;

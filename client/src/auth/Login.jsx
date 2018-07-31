@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import { doLogin } from './../user/actions';
 import FormLayout from './../layouts/FormLayout';
+import ErrorBox from './../common/ErrorBox';
 
 class Login extends React.Component {
 
@@ -19,6 +20,7 @@ class Login extends React.Component {
 
         this.setState(() => ({
             data: {
+                ...this.state.data,
                 [name]: value,
             },
         }));
@@ -41,7 +43,7 @@ class Login extends React.Component {
 
         return (
             <form action="#" method="post" onSubmit={this.onSubmit} >
-                {this.state.error && <div>{this.state.error}</div>}
+                <ErrorBox error={this.state.error} />
                 <div className="form__input">
                     <input type="email" name="email" id="email" placeholder="Email" autoComplete="off" required onChange={this.onChange} />
                 </div>
@@ -60,7 +62,7 @@ class Login extends React.Component {
 const mapDispatchToProps = dispatch => {
     return {
         doLogin(data) {
-            dispatch(doLogin(data))
+            return dispatch(doLogin(data))
         },
     };
 }

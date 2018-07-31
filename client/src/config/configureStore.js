@@ -3,10 +3,12 @@ import thunk from 'redux-thunk';
 import persistState from 'redux-localstorage';
 
 import user from './../user/reducer';
+import shipments from './../shipment/reducer';
 
 export default function (initialState = {}) {
     const combined = combineReducers({
         user,
+        shipments,
     });
 
     return createStore(
