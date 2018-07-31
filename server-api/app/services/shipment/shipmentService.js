@@ -5,6 +5,7 @@ const ShipmentValidator = require('./shipmentValidator');
 const { SHIPMENT_STATUSES } = require('./definitions');
 const getEditableFields = require('./editableFieldsHelper');
 const ValidationError = require('./../abstract/validationError');
+const { USER_ROLES } = require('./../roles/definitions');
 
 class ShipmentService extends CrudService {
 
@@ -127,8 +128,10 @@ class ShipmentService extends CrudService {
         const model = this.getModel();
         const filter = {};
 
-        if (user.role !== 'manager') {
-            filter._id = user._id;
+        if (user.role === USER_ROLES.shipper) {
+            filter.shipper_id = user._id;
+        } else if (user.role === USER_ROLES.biker) {
+            filter.biker_id = user._id;
         }
 
         const stats = await model.aggregate(
