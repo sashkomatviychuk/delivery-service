@@ -1,13 +1,12 @@
 import axios from 'axios';
 
-import { API_BASE_URL } from './../config';
-
 export const BEFORE_SHIPMENTS_LOADED = 'BEFORE_SHIPMENTS_LOADED';
 export const LOADED_SHIPMENTS = 'LOADED_SHIPMENTS';
 export const SHIPMENTS_LOADED_FAILED = 'SHIPMENTS_LOADED_FAILED';
 export const UPDATE_SHIPMENT = 'UPDATE_SHIPMENT';
 
 const ELEMENTS_PER_PAGE = 20;
+const apiBaseUrl = process.env.REACT_APP_API_ENDPOINT;
 
 function beforeLoadedAction() {
     return {
@@ -54,7 +53,7 @@ export const fetchShipments = () => (dispatch, getState) => {
         },
     };
 
-    return axios.get(`${API_BASE_URL}/shipments`, payload)
+    return axios.get(`${apiBaseUrl}/shipments`, payload)
         .then(response => {
             const data = response.data || {};
             const shipments = data.shipments || [];
@@ -69,7 +68,7 @@ export const createShipment = (data) => (dispatch, getState) => {
     const token = state.user.token;
     const headers = { Authorization: token };
 
-    return axios.post(`${API_BASE_URL}/shipment`, data, { headers })
+    return axios.post(`${apiBaseUrl}/shipment`, data, { headers })
         .then(response => response.data)
         .catch(err => {
             return {

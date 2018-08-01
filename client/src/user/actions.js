@@ -1,11 +1,12 @@
 import axios from 'axios';
 
 import { showError, showInfo } from './../alert/actions';
-import { API_BASE_URL } from './../config';
 
 export const SET_USER = 'SET_USER';
 export const DESTROY_USER = 'DESTROY_USER';
 export const SET_USER_STATS = 'SET_USER_STATS';
+
+const apiBaseUrl = process.env.REACT_APP_API_ENDPOINT;
 
 function setUser(data, token) {
     return {
@@ -30,7 +31,7 @@ function setUserStats(stats) {
 
 export function doLogin(credentials) {
     return (dispatch, getState) => {
-        return axios.post(`${API_BASE_URL}/login`, credentials)
+        return axios.post(`${apiBaseUrl}/login`, credentials)
             .then(response => {
                 const { data, token, result } = response.data;
 
@@ -62,7 +63,7 @@ export const doLogout = function doLogout() {
 export const doRegister = function doRegister(data, history) {
     return (dispatch, getState) => {
 
-        return axios.post(`${API_BASE_URL}/register`, data)
+        return axios.post(`${apiBaseUrl}/register`, data)
             .then(response => {
                 const data = response.data;
 
@@ -84,7 +85,7 @@ export const doRegister = function doRegister(data, history) {
 }
 
 export const doFetchStats = function doFetchStats(token) {
-    return (dispatch, getState) => axios.get(`${API_BASE_URL}/stats`, { headers: { Authorization: token } })
+    return (dispatch, getState) => axios.get(`${apiBaseUrl}/stats`, { headers: { Authorization: token } })
         .then(response => {
             const data = response.data || {};
             const stats = data.stats || [];

@@ -23,6 +23,8 @@ const render = Component => {
     );
 }
 
+console.log(process.env);
+
 render(App);
 
 registerServiceWorker();
