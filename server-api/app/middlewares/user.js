@@ -50,7 +50,6 @@ module.exports = {
 
             res.json({ result: 1 });
         } catch (err) {
-            console.log(err);
             if (err instanceof ValidationError) {
                 return res.json({
                     error: err.message,

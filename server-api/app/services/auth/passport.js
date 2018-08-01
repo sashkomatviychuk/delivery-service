@@ -1,6 +1,5 @@
 const passport = require('passport');
 const { Strategy } = require('passport-local');
-const { Application } = require('express');
 const Jwt = require('passport-jwt');
 
 passport.use(new Strategy(

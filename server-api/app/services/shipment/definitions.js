@@ -10,7 +10,15 @@ const SHIPMENT_STATUSES = {
     delivered: 'delivered',
 };
 
+const SHIPMENT_STATUSES_TITLES = {
+    [SHIPMENT_STATUSES.waiting]: 'Waiting',
+    [SHIPMENT_STATUSES.assigned]: 'Assigned',
+    [SHIPMENT_STATUSES.picked_up]: 'Picked up',
+    [SHIPMENT_STATUSES.delivered]: 'Delivered',
+};
+
 module.exports = {
     DISCOUNT_TYPES,
     SHIPMENT_STATUSES,
+    SHIPMENT_STATUSES_TITLES
 };

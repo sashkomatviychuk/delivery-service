@@ -1,9 +1,7 @@
-const _ = require('lodash');
-
 const { USER_ROLES } = require('./../roles/definitions');
 const { SHIPMENT_STATUSES } = require('./../shipment/definitions');
 
-const config = {
+module.exports = {
     [USER_ROLES.shipper]: {
         [SHIPMENT_STATUSES.waiting]: [
             'title',
@@ -41,8 +39,4 @@ const config = {
             'discount_value',
         ],
     },
-};
-
-module.exports = (role, status) => {
-    return _.get(config, `${role}.${status}`, []);
 };

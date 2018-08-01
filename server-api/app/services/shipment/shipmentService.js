@@ -2,10 +2,8 @@ const _ = require('lodash');
 
 const CrudService = require('./../abstract/crudService');
 const ShipmentValidator = require('./shipmentValidator');
-const { SHIPMENT_STATUSES } = require('./definitions');
-const getEditableFields = require('./editableFieldsHelper');
 const ValidationError = require('./../abstract/validationError');
-const { USER_ROLES } = require('./../roles/definitions');
+const ShipmentHelper = require('./shipmentHelper');
 
 class ShipmentService extends CrudService {
 
@@ -28,18 +26,13 @@ class ShipmentService extends CrudService {
      * @param {Request} req 
      */
     async getPreparedShipments(req) {
-        const role = req.user.role;
+        const user = req.user;
+        const role = user.role;
         const limit = _.get(req, 'query.limit', 10); // add from config
         const page = _.get(req, 'query.page', 1);
-        const filter = {};
 
-        if (user.role === USER_ROLES.shipper) {
-            filter.shipper_id = user._id;
-        } else if (user.role === USER_ROLES.biker) {
-            filter.biker_id = user._id;
-        }
-
-        const list = this.getPaginatedList(filter, { limit, page });
+        const filter = ShipmentHelper.getUserFilter(user);
+        const list = await this.getPaginatedList(filter, { limit, page });
 
         if (Array.isArray(list)) {
             return list.map(shipment =>
@@ -77,7 +70,7 @@ class ShipmentService extends CrudService {
      * @param {String} shipment 
      */
     applyEditableFieldsToShipment(role, shipment) {
-        const editableFields = getEditableFields(role, shipment.status);
+        const editableFields = ShipmentHelper.getEditableFields(role, shipment.status);
         return _.extend({}, shipment, { editableFields });
     }
 
@@ -125,7 +118,7 @@ class ShipmentService extends CrudService {
         }
 
         const status = shipment.status;
-        const editableFields = getEditableFields(role, status);
+        const editableFields = ShipmentHelper.getEditableFields(role, status);
         const editableData = _.pick(data, editableFields);
 
         if (validator) {
@@ -150,13 +143,7 @@ class ShipmentService extends CrudService {
      */
     async getStats(user) {
         const model = this.getModel();
-        const filter = {};
-
-        if (user.role === USER_ROLES.shipper) {
-            filter.shipper_id = user._id;
-        } else if (user.role === USER_ROLES.biker) {
-            filter.biker_id = user._id;
-        }
+        const filter = ShipmentHelper.getUserFilter(user);
 
         const stats = await model.aggregate(
             [
@@ -178,16 +165,7 @@ class ShipmentService extends CrudService {
             ]
         ).exec();
 
-        const statsAsObject = stats.reduce((result, item) => {
-            _.set(result, item.status, item.count);
-        },{});
-
-        return _.map(SHIPMENT_STATUSES, statusName => {
-            return {
-                status: statusName,
-                count: statsAsObject[statusName] || 0,
-            }
-        });
+        return ShipmentHelper.prepareShipmentsStats(stats);
     }
 }
 
