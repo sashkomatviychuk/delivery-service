@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Redirect from 'react-router/Redirect';
+import withRouter from 'react-router/withRouter';
 
 import MenuLayout from './../layouts/MenuLayout';
 import ErrorBox from './../common/ErrorBox';
@@ -38,17 +38,12 @@ class AddShipmentForm extends React.Component {
                 } else if (!response.result) {
                     this.setState(() => ({ error: 'Unknown error. Try again' }));
                 } else {
-                    this.setState(() => ({ redirect: true }));
-                    // return this.context.history.push('/');
+                    this.props.history.push('/');
                 }
             });
     }
 
     render() {
-
-        if (this.state.redirect) {
-            return (<Redirect to="/" />);
-        }
 
         return (
             <div className="main__content">
@@ -88,5 +83,5 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default MenuLayout(
-    connect(undefined, mapDispatchToProps)(AddShipmentForm)
+    withRouter(connect(undefined, mapDispatchToProps)(AddShipmentForm))
 );
