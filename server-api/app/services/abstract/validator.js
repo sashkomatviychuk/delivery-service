@@ -25,7 +25,9 @@ class AbstractValidator {
             schema = Joi.object().keys(validationKeys);
         }
 
-        return Joi.validate(data, schema);
+        return Joi.validate(data, schema, {
+            allowUnknown: true,
+        });
     }
 }
 

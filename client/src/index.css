@@ -313,6 +313,50 @@ footer {
   border-right: 1px solid #444;
 }
 
+/* alerts */
+
+.alert__container {
+  width: 100%;
+  padding: 20px 10px;
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.alert__container.alert-error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert__container.alert-info {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.alert__close {
+  top: 0;
+  right: 0;
+  position: absolute;
+  bottom: 0;
+  border: 0;
+  background-color: transparent;
+}
+
+.alert__close:hover {
+  cursor: pointer;
+}
+
+.alert__close span {
+  font-size: 1.5rem;
+  font-weight: 700;
+  opacity: .5;
+}
+
+.alert__close span:hover {
+  opacity: 1;
+}
+
 @media screen and (max-width: 1023px) {
   .main__nav {
       flex-basis: 20%;

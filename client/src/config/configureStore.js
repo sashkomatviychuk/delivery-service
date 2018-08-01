@@ -4,11 +4,13 @@ import persistState from 'redux-localstorage';
 
 import user from './../user/reducer';
 import shipments from './../shipment/reducer';
+import alert from './../alert/reducer';
 
 export default function (initialState = {}) {
     const combined = combineReducers({
         user,
         shipments,
+        alert,
     });
 
     return createStore(

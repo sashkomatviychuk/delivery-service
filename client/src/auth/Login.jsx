@@ -1,17 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import withRouter from 'react-router/withRouter';
 
 import { doLogin } from './../user/actions';
 import FormLayout from './../layouts/FormLayout';
-import ErrorBox from './../common/ErrorBox';
 
 class Login extends React.Component {
 
     // initial state
     state = {
         data: {},
-        erorr: '',
     };
 
     onChange = e => {
@@ -29,21 +28,13 @@ class Login extends React.Component {
     onSubmit = e => {
         e.preventDefault();
 
-        this.props.doLogin(this.state.data)
-            .then(response => {
-                if (response.error) {
-                    this.setState(() => ({ error: response.error }));
-                } else if (!response.result) {
-                    this.setState(() => ({ error: 'Unknown error. Try again' }));
-                }
-            });
+        this.props.doLogin(this.state.data);
     }
 
     render() {
 
         return (
             <form action="#" method="post" onSubmit={this.onSubmit} >
-                <ErrorBox error={this.state.error} />
                 <div className="form__input">
                     <input type="email" name="email" id="email" placeholder="Email" autoComplete="off" required onChange={this.onChange} />
                 </div>
@@ -69,5 +60,5 @@ const mapDispatchToProps = dispatch => {
 
 export default FormLayout(
     'Login',
-    connect(undefined, mapDispatchToProps)(Login)
+    withRouter(connect(undefined, mapDispatchToProps)(Login))
 );

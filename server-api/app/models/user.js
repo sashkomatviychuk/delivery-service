@@ -36,6 +36,14 @@ UserSchema.plugin(timestamps, {
     updatedAt: 'updated_at',
 });
 
+UserSchema.pre('validate', function (next) {
+    if (this.confirm_password) {
+        delete this.confirm_password;
+    }
+
+    next();
+});
+
 UserSchema.pre('save', function (next) {
     bcrypt.genSalt(10, (err, salt) => {
         if (err) { return next(err); }

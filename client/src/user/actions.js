@@ -1,7 +1,8 @@
 import axios from 'axios';
 
+import { showError, showInfo } from './../alert/actions';
 import { API_BASE_URL } from './../config';
-// add show error
+
 export const SET_USER = 'SET_USER';
 export const DESTROY_USER = 'DESTROY_USER';
 export const SET_USER_STATS = 'SET_USER_STATS';
@@ -31,24 +32,23 @@ export function doLogin(credentials) {
     return (dispatch, getState) => {
         return axios.post(`${API_BASE_URL}/login`, credentials)
             .then(response => {
-                const { data, token, error } = response.data;
+                const { data, token, result } = response.data;
 
-                if (error) {
-                    return { error, result: 0 };
+                if (!result) {
+                    return dispatch(showError('Bad login or password'));
                 }
 
                 if (data && token) {
                     dispatch(setUser(data, token));
                     dispatch(doFetchStats(token));
                 }
-
-                return { result: 1 };
             })
             .catch(err => {
-                return {
-                    result: 0,
-                };
-                // dispatch(showError('Bad login or password'));
+                if (err.response.status === 401) {
+                    return dispatch(showError('Bad login or password'));
+                }
+
+                dispatch(showError('Unknown error. Try again'));
             });
     };
 }
@@ -59,25 +59,26 @@ export const doLogout = function doLogout() {
     }
 }
 
-export const doRegister = function doRegister(data) {
+export const doRegister = function doRegister(data, history) {
     return (dispatch, getState) => {
-        // todo: add validation
-        if (data['password'] !== data['confirm_password']) {
-            return Promise.resolve({
-                error: 'Password confirm is not the same that password',
-            });
-        }
-
-        delete data['confirm_password'];
 
         return axios.post(`${API_BASE_URL}/register`, data)
             .then(response => {
-                return response.data;
+                const data = response.data;
+
+                if (data.error) {
+                    return dispatch(showError(data.error));
+                }
+
+                if (!data.result) {
+                    return dispatch(showError('Unknown error. Try again'));
+                }
+
+                dispatch(showInfo('You register successfuly. Now you can log in'));
+                history.push('/login');
             })
             .catch(err => {
-                return {
-                    result: 0,
-                };
+                dispatch(showError('Unknown error. Try again'));
             });
     };
 }

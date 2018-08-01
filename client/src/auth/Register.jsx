@@ -1,17 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import withRouter from 'react-router/withRouter';
 
 import { doRegister } from './../user/actions';
 import FormLayout from './../layouts/FormLayout';
-import ErrorBox from './../common/ErrorBox';
 
 class Register extends React.Component {
     // initial state
     state = {
         data: {},
-        erorr: '',
-        showForm: true,
     };
 
     onChange = e => {
@@ -29,31 +27,13 @@ class Register extends React.Component {
     onSubmit = e => {
         e.preventDefault();
 
-        this.props.doRegister(this.state.data)
-            .then(response => {
-                if (response.error) {
-                    this.setState(() => ({ error: response.error }));
-                } else if (!response.result) {
-                    this.setState(() => ({ error: 'Unknown error. Try again' }));
-                } else {
-                    this.setState(() => ({ showForm: false }));
-                }
-            });
+        this.props.doRegister(this.state.data, this.props.history);
     }
 
     render() {
-        if (!this.state.showForm) {
-            return (
-                <div>
-                    <div>You register successfuly. Now you can log in.</div>
-                    <Link to="/login" className="button button-link">Login</Link>
-                </div>
-            );
-        }
 
         return (
             <form action="#" method="post" onSubmit={this.onSubmit}>
-                <ErrorBox error={this.state.error} />
                 <div className="form__input">
                     <input type="text" name="first_name" id="first_name" placeholder="First name" autoComplete="off" required onChange={this.onChange} />
                 </div>
@@ -94,13 +74,13 @@ class Register extends React.Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        doRegister(data) {
-            return dispatch(doRegister(data))
+        doRegister(data, history) {
+            return dispatch(doRegister(data, history))
         },
     };
 }
 
 export default FormLayout(
     'Register',
-    connect(undefined, mapDispatchToProps)(Register)
+    withRouter(connect(undefined, mapDispatchToProps)(Register))
 );

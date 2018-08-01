@@ -39,6 +39,7 @@ class AddShipmentForm extends React.Component {
                     this.setState(() => ({ error: 'Unknown error. Try again' }));
                 } else {
                     this.setState(() => ({ redirect: true }));
+                    // return this.context.history.push('/');
                 }
             });
     }
