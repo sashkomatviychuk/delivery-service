@@ -28,11 +28,17 @@ class ShipmentService extends CrudService {
     async getPreparedShipments(req) {
         const user = req.user;
         const role = user.role;
-        const limit = _.get(req, 'query.limit', 10); // add from config
+        const limit = _.get(req, 'query.limit', 20); // add from config
         const page = _.get(req, 'query.page', 1);
 
         const filter = ShipmentHelper.getUserFilter(user);
-        const list = await this.getPaginatedList(filter, { limit, page });
+        let list = [];
+        
+        try {
+            list = await this.getPaginatedList(filter, { limit, page });
+        } catch (err) {
+            throw err;
+        }
 
         if (Array.isArray(list)) {
             return list.map(shipment =>
@@ -56,8 +62,8 @@ class ShipmentService extends CrudService {
 
         return await Shipment
             .find(filter || {})
-            .populate('shipper_id', 'first_name', 'last_name')
-            .populate('biker_id', 'first_name', 'last_name')
+            .populate('shipper_id', 'first_name last_name')
+            .populate('biker_id', 'first_name last_name')
             .sort({ _id: -1 })
             .limit(limit)
             .skip(skip)
@@ -78,7 +84,7 @@ class ShipmentService extends CrudService {
      * Creates new model entity
      * @param {Object} data
      */
-    async create(data) {
+    async create(data, user) {
         const model = this.getModel();
         const validator = this.getValidator();
         const fields = ['title', 'origin_address', 'destination_address', 'cost'];
@@ -92,6 +98,7 @@ class ShipmentService extends CrudService {
         }
 
         const entity = new model(data);
+        entity.shipper_id = user._id;
 
         try {
             await entity.save();

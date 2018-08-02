@@ -16,7 +16,7 @@ const menuItems = [
         allowed: ['shipper'],
     },
     {
-        link: '#',
+        link: '/shipments',
         title: 'Shipments',
         allowed: ['shipper', 'manager', 'biker'],
     },

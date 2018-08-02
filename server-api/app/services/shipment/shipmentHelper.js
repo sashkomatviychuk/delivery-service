@@ -37,6 +37,7 @@ class ShipmentHelper {
     static prepareShipmentsStats(stats) {
         const statsAsObject = stats.reduce((result, item) => {
             _.set(result, item.status, item.count);
+            return result;
         },{});
 
         return _.map(SHIPMENT_STATUSES, statusName => {

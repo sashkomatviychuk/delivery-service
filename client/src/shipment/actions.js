@@ -4,8 +4,10 @@ export const BEFORE_SHIPMENTS_LOADED = 'BEFORE_SHIPMENTS_LOADED';
 export const LOADED_SHIPMENTS = 'LOADED_SHIPMENTS';
 export const SHIPMENTS_LOADED_FAILED = 'SHIPMENTS_LOADED_FAILED';
 export const UPDATE_SHIPMENT = 'UPDATE_SHIPMENT';
+export const SHOW_PREVIEW = 'SHOW_PREVIEW';
+export const HIDE_PREVIEW = 'HIDE_PREVIEW';
 
-const ELEMENTS_PER_PAGE = 20;
+export const ELEMENTS_PER_PAGE = 20;
 const apiBaseUrl = process.env.REACT_APP_API_ENDPOINT;
 
 function beforeLoadedAction() {
@@ -37,6 +39,23 @@ function shipmentsWasLoaded(shipments) {
         type: LOADED_SHIPMENTS,
     }
 }
+
+export const hidePreview = () => {
+    return {
+        type: HIDE_PREVIEW,
+    };
+};
+
+export const showPreview = id => (dispatch, getState) =>  {
+    const state = getState();
+    const shipments = state.shipments.list || [];
+    const shipment = shipments.find(item => item._id === id);
+
+    dispatch({
+        shipment,
+        type: SHOW_PREVIEW,
+    });
+};
 
 export const fetchShipments = () => (dispatch, getState) => {
     const state = getState();

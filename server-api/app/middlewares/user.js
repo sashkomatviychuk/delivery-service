@@ -78,6 +78,7 @@ module.exports = {
                 result: 1,
             });
         } catch (err) {
+            console.log(err);
             return res.json({ result: 0 });
         }
     }

@@ -55,7 +55,7 @@ module.exports = {
         const shipmentService = new ShipmentService();
 
         try {
-            await shipmentService.create(req.body);
+            await shipmentService.create(req.body, req.user);
             return res.json({ result: 1 });
         } catch (err) {
             if (err instanceof ValidationError) {

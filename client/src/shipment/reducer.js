@@ -2,10 +2,16 @@ import {
     BEFORE_SHIPMENTS_LOADED,
     LOADED_SHIPMENTS,
     SHIPMENTS_LOADED_FAILED,
-    UPDATE_SHIPMENT
+    UPDATE_SHIPMENT,
+    SHOW_PREVIEW,
+    HIDE_PREVIEW
 } from './actions'
 
 let initialState = {
+    preview: {
+        shipment: {},
+        opened: false,
+    },
     list: [],
     page: 1,
     prevLength: 0,
@@ -33,10 +39,10 @@ export default (state = initialState, action) => {
                 ...state,
                 isLoading: false,
                 list: [
-                    ...state.list,
-                    ...action.issues,
+                    //...state.list,
+                    ...action.shipments,
                 ],
-                prevLength: action.issues.length,
+                prevLength: action.shipments.length,
             };
         }
 
@@ -55,6 +61,32 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 list,
+            };
+        }
+
+        case SHOW_PREVIEW: {
+            const shipment = action.shipment;
+
+            if (!shipment) {
+                return state;
+            }
+
+            return {
+                ...state,
+                preview: {
+                    shipment,
+                    opened: true,
+                },
+            };
+        }
+
+        case HIDE_PREVIEW: {
+            return {
+                ...state,
+                preview: {
+                    shipment: {},
+                    opened: false,
+                },
             };
         }
 

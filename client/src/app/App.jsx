@@ -4,6 +4,7 @@ import Routes from './../routes';
 import Header from './../common/Header';
 import Footer from './../common/Footer';
 import AlertPanel from './../alert/AlertPanel';
+import ShipmentPreview from './../shipment/Preview';
 
 class App extends React.Component {
 
@@ -15,6 +16,7 @@ class App extends React.Component {
                 <Header />
                 <Routes />
                 <Footer />
+                <ShipmentPreview />
             </div>
         );
     }
