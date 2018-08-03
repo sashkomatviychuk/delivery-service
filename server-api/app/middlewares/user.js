@@ -81,5 +81,24 @@ module.exports = {
             console.log(err);
             return res.json({ result: 0 });
         }
+    },
+
+    /**
+     * @param {Request} req 
+     * @param {Response} res 
+     */
+    async getBikersList(req, res) {
+        const service = new UserService();
+
+        try {
+            const bikers = await service.getBikersList();
+
+            return res.json({
+                bikers,
+                result: 1,
+            });
+        } catch (err) {
+            return res.json({ result: 0 });
+        }
     }
 };

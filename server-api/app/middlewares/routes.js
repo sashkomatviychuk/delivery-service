@@ -11,6 +11,7 @@ router.post('/login', auth.requireSignin, user.postLogin);
 router.post('/register', user.postRegister);
 router.post('/logout', auth.requireAuth, user.postLogout);
 router.get('/stats', auth.requireAuth, user.getStats);
+router.get('/bikers', auth.requireAuth, user.getBikersList);
 
 // shipment routes
 router.get('/shipments', auth.requireAuth, shipment.getShipments);
