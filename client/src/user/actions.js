@@ -93,3 +93,17 @@ export const doFetchStats = function doFetchStats(token) {
             dispatch(setUserStats(stats));
         })
 }
+
+export const fetchBikersList = token => {
+    const payload = { headers: { Authorization: token } };
+
+    return axios.get(`${apiBaseUrl}/bikers`, payload)
+        .then(response => {
+            const data = response.data || {};
+
+            return data.bikers || [];
+        })
+        .catch(err => {
+            return [];
+        });
+}
