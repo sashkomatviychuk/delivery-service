@@ -22,7 +22,6 @@ class ShipperForm extends BaseForm {
         data: {
             ...initialData,
         },
-        shipment: {},
     }
 
     /**

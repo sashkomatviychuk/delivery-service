@@ -150,6 +150,10 @@ class ShipmentService extends CrudService {
             editableData.status = SHIPMENT_STATUSES.delivered;
         }
 
+        if (editableData.biker_id === '') {
+            editableData.biker_id = null;
+        }
+
         try {
             await model.update({ _id: id }, { $set: editableData });
         } catch (err) {

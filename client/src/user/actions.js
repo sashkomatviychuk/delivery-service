@@ -100,7 +100,9 @@ export const doFetchStats = function doFetchStats() {
     }
 }
 
-export const fetchBikersList = token => {
+export const fetchBikersList = () => (dispatch, getState) => {
+    const state = getState();
+    const token = state.user.token;
     const payload = { headers: { Authorization: token } };
 
     return axios.get(`${apiBaseUrl}/bikers`, payload)

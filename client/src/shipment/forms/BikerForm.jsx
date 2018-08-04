@@ -25,7 +25,6 @@ class BikerForm extends BaseForm {
         data: {
             ...initialData,
         },
-        shipment: {},
     }
 
     /**
@@ -46,6 +45,9 @@ class BikerForm extends BaseForm {
         })
     }
 
+    /**
+     * Update picked_at date
+     */
     onChangePickedAt = (time) => {
         this.setState(() => {
             return {
@@ -57,6 +59,9 @@ class BikerForm extends BaseForm {
         });
     }
 
+    /**
+     * update delivered_at date
+     */
     onChangeDeliveredAt = (time) => {
         this.setState(() => {
             return {

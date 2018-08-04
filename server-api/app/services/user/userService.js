@@ -20,9 +20,20 @@ class UserService extends CrudService {
     }
 
     async getBikersList() {
-        return await User.find({
+        const bikers = await User.find({
             role: USER_ROLES.biker,
         }).lean().exec();
+
+        if (!bikers) {
+            return [];
+        }
+
+        return bikers.map(biker => {
+            return {
+                id: biker._id,
+                name: `${biker.first_name} ${biker.last_name}`,
+            };
+        });
     }
 }
 

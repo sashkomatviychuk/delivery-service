@@ -11,25 +11,35 @@ class ShipmentValidator extends AbstractValidator {
     getSchemaKeys() {
         return {
             title: Joi.string().max(255).required()
+                .label('Title')
                 .error(() => 'Title is required and max length 255 chars'),
         
             origin_address: Joi.string().max(255).required()
+                .label('Origin address')
                 .error(() => 'Origin address is required and max length 255 chars'),
         
             destination_address: Joi.string().max(255).required()
+                .label('Destination address')
                 .error(() => 'Destination address is required and max length 255 chars'),
             
             cost: Joi.number().min(0)
+                .label('Cost')
                 .error(() => 'Cost must be a number greater than 0'),
             
-            discount_type: Joi.string().valid([
+            discount_type: [
+                Joi.valid([
+                    null,
                     DISCOUNT_TYPES.amount,
                     DISCOUNT_TYPES.percentage,
-                ])
-                .error(() => 'Discount type can be only amount or percentage'),
+                ]).label('Discount type'),
+                Joi.allow(null),
+            ],
+            
         
-            discount_value: Joi.number()
-                .error(() => 'Discount value must be a number'),
+            discount_value: [
+                Joi.number().optional().label('Discount value'),
+                Joi.allow(null),
+            ],
         };
     }
 }

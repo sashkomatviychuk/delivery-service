@@ -244,12 +244,14 @@ footer {
   max-width: 300px;
 }
 
+.form__input {
+  margin: 1rem 0;
+}
+
 .form__input input, .form__input select {
   font-size: 14px;
   padding: 10px;
-  margin-top: 15px;
   width: 100%;
-  /* max-width: 300px; */
   border: 1px solid #ccc;
 }
 
@@ -258,6 +260,14 @@ footer {
   -moz-appearance: none;
   -webkit-appearance: none;
   border-radius: 0;
+}
+
+.form__input input[type=radio] {
+  width: auto;
+}
+
+.form__input input[type=radio]+label {
+  margin: 0 5px;
 }
 
 .form__actions {
