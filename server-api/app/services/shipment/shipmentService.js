@@ -137,10 +137,12 @@ class ShipmentService extends CrudService {
         }
 
         try {
-            return await model.update({ _id: id }, { $set: editableData });
+            await model.update({ _id: id }, { $set: editableData });
         } catch (err) {
             throw err;
         }
+
+        return await model.findOne({ _id: id }).lean().exec();
     }
 
     /**

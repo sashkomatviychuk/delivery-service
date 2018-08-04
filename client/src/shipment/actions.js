@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { showError, showInfo } from './../alert/actions';
+
 export const BEFORE_SHIPMENTS_LOADED = 'BEFORE_SHIPMENTS_LOADED';
 export const LOADED_SHIPMENTS = 'LOADED_SHIPMENTS';
 export const SHIPMENTS_LOADED_FAILED = 'SHIPMENTS_LOADED_FAILED';
@@ -26,7 +28,7 @@ function failedLoadedAction() {
  * @param {Object} issue
  * @returns {Object}
  */
-function updateShipmentAction(index, shipment) {
+function updateShipmentAction(shipment) {
     return {
         shipment,
         type: UPDATE_SHIPMENT,
@@ -93,5 +95,35 @@ export const createShipment = (data) => (dispatch, getState) => {
             return {
                 result: 0,
             };
+        });
+};
+
+export const updateShipment = (data, id) => (dispatch, getState) => {
+    const state = getState();
+    const token = state.user.token;
+    const headers = { Authorization: token };
+
+    console.log('data',data);
+
+    return axios.put(`${apiBaseUrl}/shipment/${id}`, data, { headers })
+        .then(response => {
+            const data = response.data || {};
+
+            if (data.result && data.shipment) {
+                dispatch(updateShipmentAction(data.shipment));
+                dispatch(showInfo('Shipment was updated'));
+
+                return true;
+            }
+
+            const error = data.error || 'Error occured during updating';
+
+            dispatch(showError(error));
+
+            return false;
+        })
+        .catch(err => {
+            dispatch(showError('Unknown error. Try again'));
+            return false;
         });
 };

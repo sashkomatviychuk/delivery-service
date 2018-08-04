@@ -83,7 +83,12 @@ module.exports = {
         const shipmentService = new ShipmentService();
 
         try {
-            await shipmentService.updateShipment(data, id, user);
+            const shipment = await shipmentService.updateShipment(data, id, user);
+
+            return res.json({
+                shipment,
+                result: 1,
+            });
         } catch (err) {
             if (err instanceof ValidationError) {
                 return res.json({
