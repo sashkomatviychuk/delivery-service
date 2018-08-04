@@ -84,14 +84,20 @@ export const doRegister = function doRegister(data, history) {
     };
 }
 
-export const doFetchStats = function doFetchStats(token) {
-    return (dispatch, getState) => axios.get(`${apiBaseUrl}/stats`, { headers: { Authorization: token } })
-        .then(response => {
-            const data = response.data || {};
-            const stats = data.stats || [];
+export const doFetchStats = function doFetchStats() {
+    return (dispatch, getState) => {
+        const state = getState();
+        const token = state.user.token;
+        const headers = { Authorization: token };
 
-            dispatch(setUserStats(stats));
-        })
+        return axios.get(`${apiBaseUrl}/stats`, { headers })
+            .then(response => {
+                const data = response.data || {};
+                const stats = data.stats || [];
+
+                dispatch(setUserStats(stats));
+            });
+    }
 }
 
 export const fetchBikersList = token => {

@@ -5,6 +5,8 @@ const ShipmentValidator = require('./shipmentValidator');
 const ValidationError = require('./../abstract/validationError');
 const ShipmentHelper = require('./shipmentHelper');
 
+const { SHIPMENT_STATUSES } = require('./definitions');
+
 class ShipmentService extends CrudService {
 
     /**
@@ -134,6 +136,18 @@ class ShipmentService extends CrudService {
             if (error) {
                 throw new ValidationError(_.get(error, 'details[0].message'));
             }
+        }
+
+        // refactoring
+        // move to separate function
+        if (editableData.biker_id && shipment.status === SHIPMENT_STATUSES.waiting) {
+            editableData.status = SHIPMENT_STATUSES.assigned;
+        } else if (editableData.biker_id === null && shipment.status === SHIPMENT_STATUSES.assigned) {
+            editableData.status = SHIPMENT_STATUSES.waiting;
+        } else if (editableData.picked_at && shipment.status === SHIPMENT_STATUSES.assigned) {
+            editableData.status = SHIPMENT_STATUSES.picked_up;
+        } else if (editableData.delivered_at && shipment.status === SHIPMENT_STATUSES.picked_up) {
+            editableData.status = SHIPMENT_STATUSES.delivered;
         }
 
         try {

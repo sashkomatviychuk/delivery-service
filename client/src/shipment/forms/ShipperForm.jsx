@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import connect from 'react-redux/lib/connect/connect';
 import withRouter from 'react-router/withRouter';
 import _get from 'lodash.get';
 
-import { updateShipment } from './../actions';
 import BaseForm from './BaseForm';
+import connect from './connect';
 
 const initialData = {
     title: '',
@@ -44,12 +43,7 @@ class ShipperForm extends BaseForm {
     }
 
     render() {
-        const shipment = _get(this.state, 'shipment');
-
-        if (!shipment) {
-            return null;
-        }
-
+        const shipment = _get(this.props, 'shipment');
         const status = shipment.status;
         const notWaiting = status !== 'waiting';
         const data = _get(this.state, 'data', initialData);
@@ -69,7 +63,7 @@ class ShipperForm extends BaseForm {
                     <input type="number" min="0" name="cost" id="cost" placeholder="Cost" autoComplete="off" required onChange={this.onChange} disabled={notWaiting} value={data.cost} />
                 </div>
                 <div className="form__actions">
-                    <button type="submit" className="button button-primary">Add</button>
+                    <button type="submit" className="button button-primary">Edit</button>
                     <Link to="/shipments" className="button button-link">Back</Link>
                 </div>
             </form>
@@ -77,21 +71,4 @@ class ShipperForm extends BaseForm {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        shipments: state.shipments.list,
-    };
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        updateShipment(data, id) {
-            return dispatch(updateShipment(data, id));
-        },
-    };
-}
-
-export default withRouter(connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ShipperForm));
+export default withRouter(connect(ShipperForm));

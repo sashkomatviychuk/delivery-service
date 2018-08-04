@@ -48,15 +48,7 @@ class BaseForm extends React.Component {
      * Set initial data to component state
      */
     componentWillMount() {
-        const shipment = this.props.shipments.find(
-            item => item._id === this.props.id
-        );
-
-        if (shipment) {
-            this.setState(() => ({ shipment }));
-        }
-
-        this.setFieldsValues(shipment);
+        this.setFieldsValues(this.props.shipment);
     }
 }
 

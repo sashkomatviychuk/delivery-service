@@ -9,7 +9,7 @@ import * as forms from './forms';
 class EditShipment extends React.Component {
 
     getForm = role => {
-        const Form = _get(form, role);
+        const Form = _get(forms, role);
 
         if (Form) {
             return Form;
@@ -25,12 +25,31 @@ class EditShipment extends React.Component {
         const Form = this.getForm(role);
         const id = _get(this.props, 'match.params.id');
 
+        const shipment = this.props.shipments.find(
+            item => item._id === id
+        );
+
+        if (!shipment) {
+            return null;
+        }
+
         return (
             <div className="main__content">
                 <div className="main__content-info">
-                    <h1 className="main__content-user">Edit shipment</h1>
+                    <h1 className="main__content-user">{shipment.title}</h1>
+                    <div className="shipment__details">
+                        <div className="shipment__details-item">
+                            <b>Current status</b>: {shipment.status}
+                        </div>
+                        <div className="shipment__details-item">
+                            <b>Road</b>: {shipment.origin_address} &mdash; {shipment.destination_address}
+                        </div>
+                    </div>
                 </div>
-                <Form id={id} />
+                <Form
+                    id={id}
+                    shipment={shipment}
+                />
             </div>
         );
     }
@@ -39,6 +58,7 @@ class EditShipment extends React.Component {
 const mapStateToProps = state => {
     return {
         role: state.user.data.role,
+        shipments: state.shipments.list,
     };
 };
 

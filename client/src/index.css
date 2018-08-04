@@ -455,6 +455,10 @@ footer {
   padding: 4px 0;
 }
 
+.shipment__details-item {
+  color: #666;
+}
+
 @media screen and (max-width: 1023px) {
   .main__nav {
       flex-basis: 20%;

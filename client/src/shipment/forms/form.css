@@ -1,0 +1,12 @@
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list {
+    padding: 0;
+}
+
+.form__input .react-datepicker__input-container input,
+.form__input .react-datepicker__input-container select {
+    margin-top: 5px;
+}
+
+.datepicker-label {
+    margin: 5px 0;
+}

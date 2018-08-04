@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { showError, showInfo } from './../alert/actions';
+import { doFetchStats } from './../user/actions'
 
 export const BEFORE_SHIPMENTS_LOADED = 'BEFORE_SHIPMENTS_LOADED';
 export const LOADED_SHIPMENTS = 'LOADED_SHIPMENTS';
@@ -111,6 +112,7 @@ export const updateShipment = (data, id) => (dispatch, getState) => {
 
             if (data.result && data.shipment) {
                 dispatch(updateShipmentAction(data.shipment));
+                dispatch(doFetchStats());
                 dispatch(showInfo('Shipment was updated'));
 
                 return true;
