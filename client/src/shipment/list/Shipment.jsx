@@ -45,7 +45,6 @@ class Shipment extends React.Component {
 const mapDispatchToProps = dispatch => {
     return {
         showPreview(id) {
-            console.log('show preview');
             return dispatch(showPreview(id));
         }
     };

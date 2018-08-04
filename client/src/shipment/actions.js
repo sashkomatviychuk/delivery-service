@@ -104,8 +104,6 @@ export const updateShipment = (data, id) => (dispatch, getState) => {
     const token = state.user.token;
     const headers = { Authorization: token };
 
-    console.log('data',data);
-
     return axios.put(`${apiBaseUrl}/shipment/${id}`, data, { headers })
         .then(response => {
             const data = response.data || {};
