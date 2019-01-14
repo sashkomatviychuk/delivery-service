@@ -1,5 +1,5 @@
-const { USER_ROLES } = require('./../roles/definitions');
-const { SHIPMENT_STATUSES } = require('./../shipment/definitions');
+const { USER_ROLES } = require('../roles/definitions');
+const { SHIPMENT_STATUSES } = require('./definitions');
 
 module.exports = {
     [USER_ROLES.shipper]: {

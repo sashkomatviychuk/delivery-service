@@ -65,8 +65,6 @@ module.exports = {
                 });
             }
 
-            console.log(err);
-
             return res.json({ result: 0 });
         }
     },

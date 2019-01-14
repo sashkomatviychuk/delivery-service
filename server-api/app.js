@@ -12,7 +12,7 @@ const apiRoutes = require('./app/middlewares/routes');
 // models
 require('./app/models');
 // passport
-require('./app/services/auth/passport');
+require('./app/services/auth/authStrategies');
 
 /**
  * Application definition

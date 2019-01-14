@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-const editableFieldsConfig = require('./editableFieldsConfig');
+const fieldsAccessConfig = require('./fieldsAccessConfig');
 const { USER_ROLES } = require('./../roles/definitions');
 const { SHIPMENT_STATUSES, SHIPMENT_STATUSES_TITLES } = require('./definitions');
 
@@ -12,7 +12,7 @@ class ShipmentHelper {
      * @returns {String[]}
      */
     static getEditableFields(role, status) {
-        return _.get(editableFieldsConfig, `${role}.${status}`, []);
+        return _.get(fieldsAccessConfig, `${role}.${status}`, []);
     }
 
     /**

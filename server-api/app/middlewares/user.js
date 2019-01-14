@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-const generateToken = require('./../services/auth/token');
+const TokenService = require('./../services/auth/tokenService');
 const UserService = require('./../services/user/userService');
 const ValidationError = require('./../services/abstract/validationError');
 const ShipmentService = require('./../services/shipment/shipmentService');
@@ -17,7 +17,7 @@ module.exports = {
         }
 
         const data = _.pick(req.user, ['_id', 'first_name', 'last_name', 'email', 'role']);
-        const token = generateToken(req.user);
+        const token = TokenService.getToken(req.user);
 
         res.json({
             data,
@@ -78,7 +78,6 @@ module.exports = {
                 result: 1,
             });
         } catch (err) {
-            console.log(err);
             return res.json({ result: 0 });
         }
     },
