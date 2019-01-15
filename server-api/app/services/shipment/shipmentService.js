@@ -88,25 +88,11 @@ class ShipmentService extends CrudService {
      */
     async create(data, user) {
         const model = this.getModel();
-        const validator = this.getValidator();
-        const fields = ['title', 'origin_address', 'destination_address', 'cost'];
-
-        if (validator) {
-            const { error } = validator.validate(data, fields);
-
-            if (error) {
-                throw new ValidationError(_.get(error, 'details[0].message'));
-            }
-        }
 
         const entity = new model(data);
         entity.shipper_id = user._id;
 
-        try {
-            await entity.save();
-        } catch (err) {
-            throw err;
-        }
+        await entity.save();
     }
 
     /**
@@ -117,7 +103,6 @@ class ShipmentService extends CrudService {
      */
     async updateShipment(data, id, user) {
         const model = this.getModel();
-        const validator = this.getValidator();
 
         const role = user.role;
         const shipment = await Shipment.findOne({ _id: id }).exec();
@@ -129,14 +114,6 @@ class ShipmentService extends CrudService {
         const status = shipment.status;
         const editableFields = ShipmentHelper.getEditableFields(role, status);
         const editableData = _.pick(data, editableFields);
-
-        if (validator) {
-            const { error } = validator.validate(editableData, editableFields);
-
-            if (error) {
-                throw new ValidationError(_.get(error, 'details[0].message'));
-            }
-        }
 
         // refactoring
         // move to separate function
@@ -154,11 +131,7 @@ class ShipmentService extends CrudService {
             editableData.biker_id = null;
         }
 
-        try {
-            await model.update({ _id: id }, { $set: editableData });
-        } catch (err) {
-            throw err;
-        }
+        await model.update({ _id: id }, { $set: editableData });
 
         return await model.findOne({ _id: id }).lean().exec();
     }

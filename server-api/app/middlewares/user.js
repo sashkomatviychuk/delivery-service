@@ -44,22 +44,14 @@ module.exports = {
      * @param {Response} res 
      */
     async postRegister(req, res) {
+        const service = new UserService();
+        
         try {
-            const service = new UserService();
             await service.create(req.body);
 
             res.json({ result: 1 });
         } catch (err) {
-            if (err instanceof ValidationError) {
-                return res.json({
-                    error: err.message,
-                    result: 0
-                });
-            }
-            
-            return res.json({
-                result: 0
-            });
+            res.json({ result: 0 });
         }
     },
 

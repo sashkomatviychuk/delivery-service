@@ -63,23 +63,9 @@ class CrudService {
      */
     async create(data) {
         const model = this.getModel();
-        const validator = this.getValidator();
-
-        if (validator) {
-            const { error } = validator.validate(data);
-
-            if (error) {
-                throw new ValidationError(_.get(error, 'details[0].message'));
-            }
-        }
-
         const entity = new model(data);
 
-        try {
-            await entity.save();
-        } catch (err) {
-            throw err;
-        }
+        await entity.save();
     }
 
     /**
@@ -89,21 +75,8 @@ class CrudService {
      */
     async update(data, id) {
         const model = this.getModel();
-        const validator = this.getValidator();
 
-        if (validator) {
-            const { error } = validator.validate(data);
-
-            if (error) {
-                throw new ValidationError(_.get(error, 'details[0].message'));
-            }
-        }
-
-        try {
-            await model.update({ _id: id }, { $set: data });
-        } catch (err) {
-            throw err;
-        }
+        await model.update({ _id: id }, { $set: data });
     }
 
     /**
