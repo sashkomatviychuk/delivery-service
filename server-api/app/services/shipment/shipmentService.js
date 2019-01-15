@@ -1,10 +1,7 @@
 const _ = require('lodash');
 
 const CrudService = require('./../abstract/crudService');
-const ShipmentValidator = require('./shipmentValidator');
-const ValidationError = require('./../abstract/validationError');
 const ShipmentHelper = require('./shipmentHelper');
-
 const { SHIPMENT_STATUSES } = require('./definitions');
 
 class ShipmentService extends CrudService {
@@ -14,13 +11,6 @@ class ShipmentService extends CrudService {
      */
     getModel() {
         return Shipment;
-    }
-
-    /**
-     * @returns {ShipmentValidator}
-     */
-    getValidator() {
-        return new ShipmentValidator();
     }
 
     /**

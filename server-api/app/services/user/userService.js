@@ -1,5 +1,4 @@
 const CrudService = require('./../abstract/crudService');
-const UserValidator = require('./userValidator');
 
 const { USER_ROLES } = require('./../roles/definitions');
 
@@ -10,13 +9,6 @@ class UserService extends CrudService {
      */
     getModel() {
         return User;
-    }
-
-    /**
-     * @returns {UserValidator}
-     */
-    getValidator() {
-        return new UserValidator();
     }
 
     async getBikersList() {

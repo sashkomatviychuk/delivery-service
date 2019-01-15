@@ -1,8 +1,6 @@
 const _ = require('lodash');
 const ObjectId = require('mongoose').Types.ObjectId;
 
-const ValidationError = require('./../abstract/validationError');
-
 class CrudService {
 
     constructor() {
@@ -14,13 +12,6 @@ class CrudService {
      */
     getModel() {
         throw new Error(`Class ${this.constructor.name} must override method getModel`);
-    }
-
-    /**
-     * Data validator, null by default
-     */
-    getValidator() {
-        return null;
     }
 
     /**
