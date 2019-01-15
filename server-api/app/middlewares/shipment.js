@@ -1,7 +1,6 @@
 const _ = require('lodash');
 
 const ShipmentService = require('./../services/shipment/shipmentService');
-const ValidationError = require('./../services/abstract/validationError');
 
 module.exports = {
 
@@ -58,13 +57,6 @@ module.exports = {
             await shipmentService.create(req.body, req.user);
             return res.json({ result: 1 });
         } catch (err) {
-            if (err instanceof ValidationError) {
-                return res.json({
-                    error: err.message,
-                    result: 0
-                });
-            }
-
             return res.json({ result: 0 });
         }
     },
@@ -87,14 +79,7 @@ module.exports = {
                 shipment,
                 result: 1,
             });
-        } catch (err) {
-            if (err instanceof ValidationError) {
-                return res.json({
-                    error: err.message,
-                    result: 0
-                });
-            }
-            
+        } catch (err) {            
             return res.json({ result: 0 });
         }
     }

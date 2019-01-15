@@ -2,7 +2,6 @@ const _ = require('lodash');
 
 const TokenService = require('./../services/auth/tokenService');
 const UserService = require('./../services/user/userService');
-const ValidationError = require('./../services/abstract/validationError');
 const ShipmentService = require('./../services/shipment/shipmentService');
 
 module.exports = {
@@ -45,7 +44,7 @@ module.exports = {
      */
     async postRegister(req, res) {
         const service = new UserService();
-        
+
         try {
             await service.create(req.body);
 
