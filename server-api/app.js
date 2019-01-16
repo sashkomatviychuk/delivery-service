@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const moment = require('moment');
 const passport = require('passport');
+const expressValidator = require('express-validator')
 
 const config = require('./app/config');
 // require controllers
@@ -33,6 +34,7 @@ class Application {
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({ extended: true }));
         this.express.use(cookieParser());
+        this.express.use(expressValidator());
 
         // init passport
         this.express.use(passport.initialize());

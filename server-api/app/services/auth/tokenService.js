@@ -5,7 +5,7 @@ module.exports = {
     /**
      * Get token when user signIn
      */
-    getToken = (user) => {
+    getToken (user) {
         return jwt.encode({ sub: user._id, iat: new Date().getTime() }, 'secret');
     },
 };

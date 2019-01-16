@@ -16,7 +16,7 @@ module.exports = {
             .withMessage('Destination address is required and max length 255 chars'),
     
         check('cost')
-            .isInt({ min: 0 })
+            .isInt({ min: 1 })
             .withMessage('Cost must be a number greater than 0'),
     
         check('discount_type')
@@ -49,7 +49,7 @@ module.exports = {
     
         check('cost')
             .optional()
-            .isInt({ min: 0 })
+            .isInt({ min: 1 })
             .withMessage('Cost must be a number greater than 0'),
     
         check('discount_type')
