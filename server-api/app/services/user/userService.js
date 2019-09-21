@@ -1,5 +1,5 @@
 const CrudService = require('./../abstract/crudService');
-
+const UserRepository = require('./../../repositories/users');
 const { USER_ROLES } = require('./../roles/definitions');
 
 class UserService extends CrudService {
@@ -26,6 +26,16 @@ class UserService extends CrudService {
                 name: `${biker.first_name} ${biker.last_name}`,
             };
         });
+    }
+
+    static async getBikersList() {
+        const bikers = await UserRepository.getByRole(USER_ROLES.biker);
+
+        if (!bikers) {
+            return [];
+        }
+
+        return bikers;
     }
 }
 

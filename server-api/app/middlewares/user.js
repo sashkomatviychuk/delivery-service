@@ -3,6 +3,7 @@ const _ = require('lodash');
 const TokenService = require('./../services/auth/tokenService');
 const UserService = require('./../services/user/userService');
 const ShipmentService = require('./../services/shipment/shipmentService');
+const { mapUsersForSelect } = require('./../services/user/helpers/mappers');
 
 module.exports = {
 
@@ -78,10 +79,9 @@ module.exports = {
      * @param {Response} res 
      */
     async getBikersList(req, res) {
-        const service = new UserService();
-
         try {
-            const bikers = await service.getBikersList();
+            const bikersList = await UserService.getBikersList();
+            const bikers = mapUsersForSelect(bikersList);
 
             return res.json({
                 bikers,
