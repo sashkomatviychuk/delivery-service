@@ -15,7 +15,7 @@
     "compression": "^1.7.3",
     "cookie-parser": "^1.4.3",
     "dotenv": "^6.0.0",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "express-session": "^1.15.6",
     "express-validator": "^5.3.1",
     "joi": "^13.4.0",
